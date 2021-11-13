@@ -69,6 +69,18 @@ void VerifyTickets(const std::vector<int>& target) {
         std::cout << "请录入购买彩票信息" << std::endl;
         return;
     }
+
+    // 输出基本信息
+    std::cout << "已购彩票" << tickets.size() << "张:" << std::endl;
+    for (const auto& ivec : tickets) {
+        DisplayVector(ivec);
+    }
+    std::cout << "中奖号码: ";
+    DisplayVector(target);
+
+    std::cout << "=============================================================" << std::endl;
+
+    // 验证中奖结果
     for (const auto& ticket : tickets) {
         int ret = VerifyOneTicket(target, ticket);
         if (ret > 0) {
