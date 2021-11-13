@@ -6,19 +6,20 @@
 
 #include "lottery_io.h"
 
-const std::vector<std::vector<int>> kAwardLevel = {
+const std::vector<std::vector<int>> kAwardLevelRule = {
     {0, 0, 0, 0, 5, 4, 2},
     {6, 6, 6, 5, 4, 3, 1},
 };
 
-static void displayVector(const std::vector<int>& ivec) {
+static void DisplayVector(const std::vector<int>& ivec) {
     for (int i : ivec) {
         std::cout << i << ", ";
     }
     std::cout << std::endl;
 }
 
-static bool isValidTicket(std::vector<int> ticket) {
+// NOTE: the parameters must not reference.
+static bool IsValidTicket(std::vector<int> ticket) {
     // 位数有效
     if (ticket.size() != 7) return false;
     // 蓝球有效
@@ -39,9 +40,9 @@ static bool isValidTicket(std::vector<int> ticket) {
     return true;
 }
 
-static int verifyOneTicket(const std::vector<int>& target,
+static int VerifyOneTicket(const std::vector<int>& target,
                            const std::vector<int>& ticket) {
-    if (!isValidTicket(target) || !isValidTicket(ticket)) {
+    if (!IsValidTicket(target) || !IsValidTicket(ticket)) {
         return -1;
     }
     // 红球
@@ -59,21 +60,26 @@ static int verifyOneTicket(const std::vector<int>& target,
         blue = 1;
     }
     // 中奖级别
-    return kAwardLevel[blue][red];
+    return kAwardLevelRule[blue][red];
 }
 
-void check() {
-    for (const auto& ticket : kTickets) {
-        int ret = verifyOneTicket(kTarget, ticket);
+void VerifyTickets(const std::vector<int>& target) {
+    const auto& tickets = GetAllTickets("tickets.txt");
+    if (tickets.empty()) {
+        std::cout << "请录入购买彩票信息" << std::endl;
+        return;
+    }
+    for (const auto& ticket : tickets) {
+        int ret = VerifyOneTicket(target, ticket);
         if (ret > 0) {
             std::cout << std::endl;
             std::cout << "恭喜你中了 " << ret << " 等奖！，中奖号码是：" << std::endl;
-            displayVector(ticket);
+            DisplayVector(ticket);
             std::cout << std::endl;
         } else if (ret == 0) {
-            std::cout << "为福利事业做贡献了" << std::endl;
+            std::cout << "为福利事业做贡献了!" << std::endl;
         } else {
-            std::cout << "彩票输入有误，请重试！！！" << std::endl;
+            std::cout << "彩票输入有误，请重试!" << std::endl;
         }
     }
 }

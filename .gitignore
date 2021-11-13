@@ -1,0 +1,5 @@
+.vscode
+lottery
+*.d
+*.o
+*.txt

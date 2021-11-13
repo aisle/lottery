@@ -1,3 +1,5 @@
 #pragma once
 
-void check();
+#include <vector>
+
+void VerifyTickets(const std::vector<int>& target);
